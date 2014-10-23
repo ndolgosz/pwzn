@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
-
+import bisect
+import csv
+import operator
+from pprint import pprint
 def load_data(path):
     """
     Funkcja która ładuje dane z pliku zawierającego ngramy. Plik ten jest
@@ -18,7 +20,14 @@ def load_data(path):
     :return: Lista dwuelementowych krotek, pierwszym elementem jest ngram, drugim
     ilość wystąpień ngramu
     """
-
+    lista1 = []
+    lista2 = []
+    with open(path, 'r') as f:
+        r = csv.reader(f, dialect=csv.unix_dialect)
+        for line in r:
+            lista1.append(line[0])
+            lista2.append(line[1])
+    return [lista1, lista2]
 
 def suggester(input, data):
     """
@@ -64,7 +73,7 @@ def suggester(input, data):
 
     Przykład zastosowania:
 
-    >>> data = load_data("path")
+    >>> data = load_data("/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xml.csv")
     >>> suggester('ąęćś', data)
     []
     >>> suggester('pytho', data)
@@ -75,3 +84,31 @@ def suggester(input, data):
      ('e', 0.07352941176470588),
      ('i', 0.014705882352941176)]
     """
+    suma = 0
+    dict = {}
+    lista = []
+    position = bisect.bisect_left(data[0], input)
+    for i in range(position,len(data[0])):
+        element = data[0][i]
+        if element[:len(input)-1] is not input:
+            break
+        if len(element) <= len(input): continue
+        suma = suma + int(data[1][i])
+        lista.append(data[0][position])
+        if element[len(input)] not in dict.keys():
+            dict[element[len(input)]] = int(data[1][i])
+        else:
+            dict[element[len(input)]] = int(data[1][i]) + dict[element[len(input)]]
+
+    dict_list = sorted(dict.items(), key=operator.itemgetter(1))
+    for val in dict_list:
+        dict_list[1] = dict_list[1]/suma
+    print(dict_list)
+
+
+
+
+file = load_data("/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xml.csv")
+
+data = (file[0], file[1])
+suggester("a,", data)
