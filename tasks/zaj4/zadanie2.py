@@ -28,7 +28,25 @@ def calculate_neighbours(board):
 
     Podpowiedź II: Proszę uważać na komówki na bokach i rogach planszy.
     """
-
+    N = np.zeros(len(board[:,0]),len(board[:,0]))
+    #lewi:
+    N[:,1:] = board[:,:-1]
+    #prawi:
+    N[:,0:-1] += board[:,1:]
+    #góra:
+    N[1:,:] += board[:-1,:]
+    #dół:
+    N[0:-1,:] += board[1:,:]
+    #lewy górny skos:
+    N[:-1,:-1] += board[1:,1:]
+    #prawy górny skos:
+    N[1:, :-1] += board[:-1,1:]
+    #lewy dolny skos:
+    N[:-1,1:] += board[1:,:-1]
+    #prawy dolny skos:
+    N[1:, 1:] += board[:-1,:-1]
+    
+    return N
 
 def iterate(board):
 
@@ -49,3 +67,6 @@ def iterate(board):
     oznacza to że dana komórka jest obsadzona
 
     """
+    N = calculate_neighbours(board)> 1
+    
+
