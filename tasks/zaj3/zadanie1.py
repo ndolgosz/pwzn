@@ -39,6 +39,9 @@ def suggester(input, data):
                       zawarte są n-gramy w drugiej ich częstotliwości.
                       Częstotliwość n-gramu data[0][0] jest zawarta w data[0][1]
 
+                      ** UWAGA ZMIANA**: Dane są sortowane po częstotliwości, a
+                      te z równą częstotliwością w kolejności alfabetycznej.
+
     :return: Listę która zawiera krotki. Pierwszym elementem krotki jest litera,
              drugim prawdopodobieństwo jej wystąpienia. Lista jest posortowana
              względem prawdopodobieństwa tak że pierwszym elementem listy
