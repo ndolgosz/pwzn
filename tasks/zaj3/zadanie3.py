@@ -8,6 +8,7 @@
 import io
 import bz2
 import re
+import operator
 from xml.dom.pulldom import parse, START_ELEMENT
 
 link_re = re.compile("\[\[([^\[\]\|]+)(?:\|[^\]]+)?\]\]")
@@ -90,9 +91,18 @@ def generate_ngrams(contents, ngram_len=7):
 
     :return: Funkcja zwraca słownik n-gram -> ilość wystąpień
     """
+    ngram_dict = {}
+    for item in contents:     
+        while True:
+            ngram = item[1].read(ngram_len)
+            if not ngram: break
+            if ngram in ngram_dict.keys():
+                ngram_dict[ngram] = int(ngram_dict[ngram]) + 1
+            else:
+                ngram_dict[ngram] = 1
+    return ngram_dict
 
-
-def save_ngrams(out_file, contents):
+def save_ngrams(out_file, contents, ngram_len=7):
     """
     Funkcja działa tak jak `generate_ngrams` ale zapisuje wyniki do pliku
     out_file. Może wykorzystywać generate_ngrams!
@@ -103,3 +113,11 @@ def save_ngrams(out_file, contents):
     :param dict ngram_dict: Słownik z n-gramami
     :param str out_file: Plik do którego n-gramy zostaną zapisane
     """
+    d = generate_ngrams(contents,ngram_len)
+    lista = sorted(d.items(), key=operator.itemgetter(0))
+    with open(out_file,'w') as f:
+        writer = csv.writer(f, dialect=csv.unix_dialect)
+        writer.writerows(lista)
+
+
+

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import operator
+import csv
 
 def merge(path1, path2, out_file):
     """
@@ -25,6 +26,7 @@ def merge(path1, path2, out_file):
     Najlepsza implementacja nie wymaga ma złożoność pamięciową ``O(1)``.
     Podpowiedź: merge sort. Nie jest to trywialne zadanie, ale jest do zrobienia.
     """
+    lista_gram = {}
     with open(path1, 'r') as file1:
         r = csv.reader(file1, dialect=csv.unix_dialect)
         for line in r:
@@ -43,6 +45,6 @@ def merge(path1, path2, out_file):
 if __name__ == '__main__':
 
     merge(
-        '/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xmlascii.csv',
-        '/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_1.xmlascii.csv',
-        '/tmp/mergeout.csv')
+        '/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_part_0.xml.csv',
+        '/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_part_2.xmlascii1000.csv',
+        '/home/n.dolgoszyja/BZDAK/pwzn//mergeout.csv')
