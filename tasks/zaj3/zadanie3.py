@@ -91,6 +91,7 @@ def generate_ngrams(contents, ngram_len=7):
 
     :return: Funkcja zwraca słownik n-gram -> ilość wystąpień
     """
+    if ngram_len < 1: return None
     ngram_dict = {}
     for item in contents:     
         while True:
