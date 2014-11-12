@@ -90,25 +90,26 @@ def suggester(input, data):
     position = bisect.bisect_left(data[0], input)
     for i in range(position,len(data[0])):
         element = data[0][i]
-        if element[:len(input)-1] is not input:
+        if len(element) <= len(input):
+            continue
+        if input not in element:
             break
-        if len(element) <= len(input): continue
         suma = suma + int(data[1][i])
-        lista.append(data[0][position])
         if element[len(input)] not in dict.keys():
             dict[element[len(input)]] = int(data[1][i])
         else:
-            dict[element[len(input)]] = int(data[1][i]) + dict[element[len(input)]]
+            dict[element[len(input)]] = int(data[1][i]) + int(dict[element[len(input)]])
 
-    dict_list = sorted(dict.items(), key=operator.itemgetter(1))
+    dict_list = sorted(dict.items(), key=operator.itemgetter(1), reverse = True)
     for val in dict_list:
-        dict_list[1] = dict_list[1]/suma
-    print(dict_list)
+        lista.append((val[0],val[1]/suma))
+    print(lista)
+    return lista
 
 
 
-
-file = load_data("/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xml.csv")
+file = load_data("/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_part_0.xml.csv")
+#file = load_data("/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xml.csv")
 
 data = (file[0], file[1])
-suggester("a,", data)
+suggester("and", data)
