@@ -103,7 +103,6 @@ def suggester(input, data):
     dict_list = sorted(dict.items(), key=operator.itemgetter(1), reverse = True)
     for val in dict_list:
         lista.append((val[0],val[1]/suma))
-    print(lista)
     return lista
 
 
@@ -112,4 +111,4 @@ file = load_data("/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_p
 #file = load_data("/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xml.csv")
 
 data = (file[0], file[1])
-suggester("and", data)
+suggester("pyth", data)
