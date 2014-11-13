@@ -2,6 +2,8 @@
 from numpy import char
 
 import numpy as np
+import bisect
+import operator
 
 def next_item(input):
     """
@@ -27,7 +29,12 @@ def load_data(path):
     Podpowiedźź: starczą dwie linikji kodu definicja dtype oraz otwarcie macierzy.
     Typ danych jest złożony --- należy użyć Structured Array.
     """
+    dtype1 = np.dtype([
+    ("ngram", np.dtype("a7")),
+    ('num', np.dtype("uint32"))])
+    mmap = np.memmap(path, dtype=dtype1, mode='r')
 
+    return mmap
 
 def suggester(input, data):
     """
@@ -65,3 +72,16 @@ def suggester(input, data):
      ('e', 0.07352941176470588),
      ('i', 0.014705882352941176)]
     """
+    tf_data = []
+    new_data = []
+    print(len(data))
+    for i in range(len(data)):
+        new_data.append(data[i][0].decode('UTF-8'))
+        tf_data.append(data[i][0].decode('UTF-8').startswith(input))
+    print(new_data[55])
+    return np.extract(tf_data, new_data)
+
+
+mm = load_data("/opt/pwzn/zaj5/enwiki-20140903-pages-articles_part_0.xmlascii.bin")
+s = suggester("pyth", mm)
+print(s)
