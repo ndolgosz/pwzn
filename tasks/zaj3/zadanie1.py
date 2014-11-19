@@ -104,11 +104,3 @@ def suggester(input, data):
     for val in dict_list:
         lista.append((val[0],val[1]/suma))
     return lista
-
-
-
-file = load_data("/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_part_0.xml.csv")
-#file = load_data("/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xml.csv")
-
-data = (file[0], file[1])
-suggester("pyth", data)

@@ -74,6 +74,8 @@ def iter_over_contents(IN):
 ### Kod pomocniczy od prowadzącego === END
 ################################################################################
 
+#import pathlib
+#import pprint
 
 def generate_ngrams(contents, ngram_len=7):
     """
@@ -95,7 +97,7 @@ def generate_ngrams(contents, ngram_len=7):
     ngram_dict = {}
     for item in contents:     
         while True:
-            ngram = item[1].read(ngram_len)
+            ngram = item[1][:ngram_len]
             if not ngram: break
             if ngram in ngram_dict.keys():
                 ngram_dict[ngram] = int(ngram_dict[ngram]) + 1
@@ -120,5 +122,5 @@ def save_ngrams(out_file, contents, ngram_len=7):
         writer = csv.writer(f, dialect=csv.unix_dialect)
         writer.writerows(lista)
 
-
-
+#content = iter_over_contents(str(pathlib.Path("/opt/pwzn/", "zaj3", "enwiki-20140903-pages-articles_part_0.xml.bz2")))
+#generate_ngrams(content)

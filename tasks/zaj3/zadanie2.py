@@ -45,6 +45,6 @@ def merge(path1, path2, out_file):
 if __name__ == '__main__':
 
     merge(
-        '/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_part_0.xml.csv',
-        '/home/n.dolgoszyja/BZDAK/pwzn/enwiki-20140903-pages-articles_part_2.xmlascii1000.csv',
-        '/home/n.dolgoszyja/BZDAK/pwzn//mergeout.csv')
+        '/home/emil/Pulpit/Uczelnia/python/enwiki-20140903-pages-articles_part_0.xml.csv',
+        '/home/emil/Pulpit/Uczelnia/python/enwiki-20140903-pages-articles_part_1.xml.csv',
+        '/home/emil/Pulpit/Uczelnia/python/pwzn/tasks/zaj3/output.csv')
