@@ -73,9 +73,8 @@ def iter_over_contents(IN):
 ################################################################################
 ### Kod pomocniczy od prowadzącego === END
 ################################################################################
-
-#import pathlib
-#import pprint
+from collections import defaultdict
+import csv
 
 def generate_ngrams(contents, ngram_len=7):
     """
@@ -94,15 +93,13 @@ def generate_ngrams(contents, ngram_len=7):
     :return: Funkcja zwraca słownik n-gram -> ilość wystąpień
     """
     if ngram_len < 1: return None
-    ngram_dict = {}
-    for item in contents:     
-        while True:
-            ngram = item[1][:ngram_len]
-            if not ngram: break
-            if ngram in ngram_dict.keys():
-                ngram_dict[ngram] = int(ngram_dict[ngram]) + 1
-            else:
-                ngram_dict[ngram] = 1
+    ngram_dict = defaultdict(lambda : 0)
+    for item in contents:
+        i=0
+        while i<=len(item[1])-ngram_len:
+            ngram = item[1][i:ngram_len+i]
+            ngram_dict[ngram] += 1
+            i+=1
     return ngram_dict
 
 def save_ngrams(out_file, contents, ngram_len=7):
@@ -122,5 +119,3 @@ def save_ngrams(out_file, contents, ngram_len=7):
         writer = csv.writer(f, dialect=csv.unix_dialect)
         writer.writerows(lista)
 
-#content = iter_over_contents(str(pathlib.Path("/opt/pwzn/", "zaj3", "enwiki-20140903-pages-articles_part_0.xml.bz2")))
-#generate_ngrams(content)
