@@ -93,11 +93,14 @@ def generate_ngrams(contents, ngram_len=7):
     :return: Funkcja zwraca słownik n-gram -> ilość wystąpień
     """
     if ngram_len < 1: return None
+
     ngram_dict = defaultdict(lambda : 0)
+
     for item in contents:
         i=0
-        while i<=len(item[1])-ngram_len:
-            ngram = item[1][i:ngram_len+i]
+        maxi = len(item[1])-ngram_len
+        while i<=maxi:
+            ngram = item[1][i : ngram_len+i]
             ngram_dict[ngram] += 1
             i+=1
     return ngram_dict
@@ -114,7 +117,9 @@ def save_ngrams(out_file, contents, ngram_len=7):
     :param str out_file: Plik do którego n-gramy zostaną zapisane
     """
     d = generate_ngrams(contents,ngram_len)
+
     lista = sorted(d.items(), key=operator.itemgetter(0))
+
     with open(out_file,'w') as f:
         writer = csv.writer(f, dialect=csv.unix_dialect)
         writer.writerows(lista)
