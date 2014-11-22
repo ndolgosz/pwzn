@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from itertools import chain, permutations, product
+from itertools import chain, permutations, product, combinations_with_replacement
 
 
 def calculate_neighbours(board):
@@ -28,9 +28,11 @@ def calculate_neighbours(board):
 
     Podpowiedź II: Proszę uważać na komówki na bokach i rogach planszy.
     """
-    N = np.zeros(len(board[:,0]),len(board[:,0]))
+    board.astype(int)
+    N = np.zeros((len(board[:,0]),len(board[0,:])))
+    
     #lewi:
-    N[:,1:] = board[:,:-1]
+    N[:,1:] += board[:,:-1]
     #prawi:
     N[:,0:-1] += board[:,1:]
     #góra:
@@ -45,7 +47,7 @@ def calculate_neighbours(board):
     N[:-1,1:] += board[1:,:-1]
     #prawy dolny skos:
     N[1:, 1:] += board[:-1,:-1]
-    
+
     return N
 
 def iterate(board):
@@ -67,6 +69,9 @@ def iterate(board):
     oznacza to że dana komórka jest obsadzona
 
     """
-    N = calculate_neighbours(board)> 1
     
-
+    nn = calculate_neighbours(board)
+    N1 = np.where(nn == 3, 1 , 0)
+    N2 = board.astype(int) * np.where(nn == 2, 1 , 0)
+    nextiter = N1+N2
+    return nextiter.astype(bool)
