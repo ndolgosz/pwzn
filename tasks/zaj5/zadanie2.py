@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from . import utils
-import mmap
-import numpy as np
-import os
-from solutions.zaj5.utils import create_dtype
-
 
 class InvalidFormatError(IOError):
     pass

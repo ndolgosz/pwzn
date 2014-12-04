@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from solutions.zaj5.zadanie2 import  load_data # Musi tu być żeby testy przeszły
+from tasks.zaj5.zadanie2 import  load_data # Musi tu być żeby testy przeszły
 
 import numpy as np
 

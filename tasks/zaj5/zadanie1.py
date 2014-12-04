@@ -47,7 +47,8 @@ def suggester(input, data):
     :return: Dowolną strukturę którą można zaindeksować w następującyc sposób:
             ret[0][0] zwraca najbardziej prawdopodobną nasßępną literę. ret[0][1]
             jej prawdopodobieństwo. ret[-1][0] zwraca najmniej prawdopodobną literę.
-            Dane posortowane są względem prawodpodobieństwa.
+            Dane posortowane są względem prawodpodobieństwa, dane o tym samym prawdopodbieństwie
+            są sortowane po kolei.
 
     By wygenerować częstotliwości należy:
 
