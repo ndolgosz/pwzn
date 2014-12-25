@@ -67,28 +67,28 @@ def load_data(filename):
 
     W zadaniu 3 będziecie na tym pliku robić obliczenia.
     """
-    naglowek = 30
-
-    typ_danych = np.dtype([
-     ("event_id", 'uint16'),
-     ("particle_position", '3float32'),
-     ("particle_mass", 'float32'),
-     ('particle_velocity', '3float32'),
-     (' ', 'a98')])
-
-    info_pliku = os.stat(filename)
-
-    if info_pliku.st_size < naglowek:
-        raise InvalidFormatError
-
-    struktura = struct.Struct("<16s3H2I")
+    structure = struct.Struct("<16sHHHII")
 
     with open(filename, 'rb') as f:
-        data = mmap.mmap(f.fileno(), naglowek, mmap.MAP_SHARED, mmap.PROT_READ)
-
-        m, duzy_plik, maly_plik, rozmiar, ilosc, offset = struktura.unpack(data)
-
-        if (m != b'6o\xfdo\xe2\xa4C\x90\x98\xb2t!\xbeurn') | (duzy_plik != 3) | (info_pliku.st_size != offset + ilosc*rozmiar):
+        try:
+            data = mmap.mmap(f.fileno(), 0, mmap.MAP_SHARED, mmap.PROT_READ)
+            unpacked = structure.unpack(data[0:structure.size])
+        except:
             raise InvalidFormatError
 
-    return np.memmap(filename, typ_danych, offset = offset)
+        if unpacked[0] != b'6o\xfdo\xe2\xa4C\x90\x98\xb2t!\xbeurn':
+            raise InvalidFormatError
+        if unpacked[1] != 3:
+            raise InvalidFormatError
+        if data.size() != unpacked[5]+unpacked[4]*unpacked[3]:
+            raise InvalidFormatError
+        if unpacked[3] < 30:
+            raise InvalidFormatError
+
+    dt = [('event_id', np.uint16), ('particle_position', np.dtype("3float32")),('particle_mass', np.float32), ('particle_velocity', np.dtype("3float32"))]
+
+    if unpacked[3] > 30:
+        dt += [('padding', str(unpacked[3]-30)+'a')]
+    data_type = np.dtype(dt)
+
+    return np.memmap(filename, dtype=data_type, mode='r', offset=unpacked[5])

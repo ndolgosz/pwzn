@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from tasks.zaj5.zadanie2 import  load_data # Musi tu być żeby testy przeszły
+from tasks.zaj5.zadanie2 import load_data # Musi tu być żeby testy przeszły
 
 import numpy as np
 
@@ -41,8 +41,8 @@ def get_energy_spectrum(event_id, data, left, right, bins):
     """
 
 if __name__ == "__main__":
-    data = load_data("...")
-    # print(data['velocity'])
-    print(get_event_count(data))
-    print(get_center_of_mass(1, data))
-    print(list(get_energy_spectrum(3, data, 0, 90, 100)))
+    data = load_data("/opt/pwzn/zaj5/zadA")
+    print(data)
+    #print(get_event_count(data))
+    #print(get_center_of_mass(1, data))
+    #print(list(get_energy_spectrum(3, data, 0, 90, 100)))
