@@ -18,7 +18,7 @@ def get_event_count(data):
 
     :param np.ndarray data: Wynik działania zadanie2.load_data
     """
-
+    return len(set(data['event_id']))
 
 def get_center_of_mass(event_id, data):
     """
@@ -26,7 +26,7 @@ def get_center_of_mass(event_id, data):
     :param np.ndarray data: Wynik działania zadanie2.load_data
     :return: Macierz 3 x 1
     """
-
+    return data[event_id]['particle_position']
 
 def get_energy_spectrum(event_id, data, left, right, bins):
     """
@@ -42,7 +42,7 @@ def get_energy_spectrum(event_id, data, left, right, bins):
 
 if __name__ == "__main__":
     data = load_data("/opt/pwzn/zaj5/zadA")
-    print(data)
+    #print(data)
     #print(get_event_count(data))
     #print(get_center_of_mass(1, data))
-    #print(list(get_energy_spectrum(3, data, 0, 90, 100)))
+    print(list(get_energy_spectrum(3, data, 0, 90, 100)))
