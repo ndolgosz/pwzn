@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+import struct
+import numpy as np
+import os
+import mmap
 
 
 class InvalidFormatError(IOError):
@@ -29,7 +33,7 @@ def load_data(filename):
     * event_id: uint16 numer zdarzenia
     * particle_position: 3*float32 we współrzędnych kartezjańskich [m]
     * particle mass: float32 współrzędne kartezjańskie [kg]
-    * particle_velocity: 3*float32 współrzędne kartezjańskie [m/s]
+    * particle_velocity: 3*float32 współrzędne kartezjańskie [m/struktura]
 
     Struktura i nagłówek nie mają paddingu i są zapisani little-endian!
 
@@ -63,3 +67,28 @@ def load_data(filename):
 
     W zadaniu 3 będziecie na tym pliku robić obliczenia.
     """
+    naglowek = 30
+
+    typ_danych = np.dtype([
+     ("event_id", 'uint16'),
+     ("particle_position", '3float32'),
+     ("particle_mass", 'float32'),
+     ('particle_velocity', '3float32'),
+     (' ', 'a98')])
+
+    info_pliku = os.stat(filename)
+
+    if info_pliku.st_size < naglowek:
+        raise InvalidFormatError
+
+    struktura = struct.Struct("<16s3H2I")
+
+    with open(filename, 'rb') as f:
+        data = mmap.mmap(f.fileno(), naglowek, mmap.MAP_SHARED, mmap.PROT_READ)
+
+        m, duzy_plik, maly_plik, rozmiar, ilosc, offset = struktura.unpack(data)
+
+        if (m != b'6o\xfdo\xe2\xa4C\x90\x98\xb2t!\xbeurn') | (duzy_plik != 3) | (info_pliku.st_size != offset + ilosc*rozmiar):
+            raise InvalidFormatError
+
+    return np.memmap(filename, typ_danych, offset = offset)
