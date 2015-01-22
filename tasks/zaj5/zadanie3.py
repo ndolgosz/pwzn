@@ -37,8 +37,9 @@ def get_center_of_mass(event_id, data):
         y[i] = dataset['particle_position'][1][1]*dataset['particle_mass'][i]
         z[i] = dataset['particle_position'][1][2]*dataset['particle_mass'][i]
         den += dataset['particle_mass'][i]
-    return np.matrix([sum(x)/den, sum(y)/den, sum(z)/den])
-
+    dane = data[data['event_id'] == event_id]
+    center = np.sum(dane['particle_position']*dane['particle_mass'][:,np.newaxis], axis=0)/np.sum(dane['particle_mass'])
+    return center
 
 def get_energy_spectrum(event_id, data, left, right, bins):
     """
@@ -53,13 +54,11 @@ def get_energy_spectrum(event_id, data, left, right, bins):
     """
     indexes = data['event_id'] == event_id
     dataset = data[indexes]
-    E = [len(dataset['particle_mass'])]
+    velocity = np.ndarray(shape=(len(dataset['particle_mass'])))
     for i in range(0, len(dataset['particle_mass'])) :
-        E_x = (dataset['particle_mass'][i] * dataset['particle_velocity'][i][0]**2)/2
-        E_y = (dataset['particle_mass'][i] * dataset['particle_velocity'][i][1]**2)/2
-        E_z = (dataset['particle_mass'][i] * dataset['particle_velocity'][i][2]**2)/2
-        E.append(np.sqrt(E_x**2 + E_y**2 + E_z**2))
-    hist = np.histogram(E, bins = np.linspace(left, right, bins))
+        velocity[i] = np.sqrt(dataset['particle_velocity'][i][0]**2 + dataset['particle_velocity'][i][1]**2 + dataset['particle_velocity'][i][2]**2)
+    E = dataset['particle_mass']*velocity**2/2
+    hist = np.histogram(E, bins = bins,  range =(left, right))
     return hist[0]
 
 if __name__ == "__main__":
